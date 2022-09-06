@@ -1,0 +1,17 @@
+.cache/
+.vscode/
+.idea/
+.vs/
+
+build/**
+dep/**
+dist/**
+tmp/**
+rnbo-export/**
+!rnbo-export/README.md
+
+.DS_Store
+*.dll
+*.dylib
+*.so
+*.o

@@ -1,0 +1,25 @@
+{
+  "slug": "rnbo-examples",
+  "name": "RNBO Examples",
+  "version": "2.0.0",
+  "license": "GPL-3.0-or-later",
+  "brand": "C74",
+  "author": "Cycling '74",
+  "authorEmail": "isabel@cycling74.com",
+  "authorUrl": "",
+  "pluginUrl": "",
+  "manualUrl": "",
+  "sourceUrl": "https://github.com/Cycling74/RNBO-VCVRack-Example",
+  "donateUrl": "",
+  "changelogUrl": "",
+  "modules": [
+    {
+      "slug": "rnbo",
+      "name": "rnbo",
+      "description": "A basic RNBO audio effect module",
+      "tags": [
+        "effect"
+      ]
+    }
+  ]
+}
