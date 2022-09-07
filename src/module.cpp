@@ -106,7 +106,7 @@ struct RnboModule : Module {
 
 		// Perform when we've filled the buffer
 		if (count == currentBufferSize) {
-			RNBO::ParameterInfo *paramInfo = new RNBO::ParameterInfo;
+			RNBO::ParameterInfo paramInfo;
 			// Update any parameters
 			for (int i = 0; i < numParams; i++) {
 				// Get VCV inputs
@@ -114,15 +114,14 @@ struct RnboModule : Module {
 				float cvVal = inputs[i + numInputs].isConnected() ? inputs[i + numInputs].getVoltage() / 5.f : 0.f;  // Normalize to -1..1
 
 				// Scale to range of parameter
-				rnboObj.getParameterInfo(i, paramInfo);
-				float min = paramInfo->min;
-				float max = paramInfo->max;
+				rnboObj.getParameterInfo(i, &paramInfo);
+				float min = paramInfo.min;
+				float max = paramInfo.max;
 				float range = fabs(max - min);
 				float val = clamp(knobVal + cvVal * range, min, max); // Offset the knobVal by the CV input
 
 				rnboObj.setParameterValue(i, val);
 			}
-			delete paramInfo;
 
 			// Fill the buffers
 			rnboObj.prepareToProcess(args.sampleRate, currentBufferSize);
@@ -202,13 +201,12 @@ struct RnboModuleWidget : ModuleWidget {
 				outputLabels.push_back(outputLabel);
 			}
 
-			RNBO::ParameterInfo *paramInfo = new RNBO::ParameterInfo;
+			RNBO::ParameterInfo paramInfo;
 			for (int i = 0; i < numParams; i++) {
 				std::string paramLabel = std::string(module->rnboObj.getParameterName(i));
 				paramLabel.resize(10);
 				paramLabels.push_back(paramLabel);
 			}
-			delete paramInfo;
 
 			// Figure out the width of the module
 			module_hp = 2 + 3 * (racktarget::util::int_div_round_up(numInputs, ports_per_col)
