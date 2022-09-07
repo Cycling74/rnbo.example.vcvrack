@@ -3,7 +3,7 @@
 /// Processing
 
 struct RnboModule : Module {
-	RNBO::CoreObject *rnboObj;
+	RNBO::CoreObject rnboObj;
 	RNBO::number **inputBuffers;
 	RNBO::number **outputBuffers;
 	int currentBufferSize = 256;
@@ -15,11 +15,9 @@ struct RnboModule : Module {
 	int count = 0;
 
 	RnboModule() {
-		rnboObj = new RNBO::CoreObject;
-
-		numParams = rnboObj->getNumParameters();
-		numInputs = rnboObj->getNumInputChannels();
-		numOutputs = rnboObj->getNumOutputChannels();
+		numParams = rnboObj.getNumParameters();
+		numInputs = rnboObj.getNumInputChannels();
+		numOutputs = rnboObj.getNumOutputChannels();
 
 		// Initialize sample buffers
 		inputBuffers = new RNBO::number *[numInputs];
@@ -37,7 +35,7 @@ struct RnboModule : Module {
 		config(numParams, numInputs + numParams, numOutputs, 0);
 		for (int i = 0; i < numParams; i++) {
 			RNBO::ParameterInfo paramInfo;
-			rnboObj->getParameterInfo(i, &paramInfo);
+			rnboObj.getParameterInfo(i, &paramInfo);
 			configParam(i, 
 						static_cast<float>(paramInfo.min),
 						static_cast<float>(paramInfo.max),
@@ -49,11 +47,6 @@ struct RnboModule : Module {
 
 
 	~RnboModule() {
-		delete rnboObj;
-		deleteBuffers();
-	}
-
-	void deleteBuffers() {
 		for (int i = 0; i < numInputs; i++) {
 			if (inputBuffers[i]) {
 				delete inputBuffers[i];
@@ -121,19 +114,19 @@ struct RnboModule : Module {
 				float cvVal = inputs[i + numInputs].isConnected() ? inputs[i + numInputs].getVoltage() / 5.f : 0.f;  // Normalize to -1..1
 
 				// Scale to range of parameter
-				rnboObj->getParameterInfo(i, paramInfo);
+				rnboObj.getParameterInfo(i, paramInfo);
 				float min = paramInfo->min;
 				float max = paramInfo->max;
 				float range = fabs(max - min);
 				float val = clamp(knobVal + cvVal * range, min, max); // Offset the knobVal by the CV input
 
-				rnboObj->setParameterValue(i, val);
+				rnboObj.setParameterValue(i, val);
 			}
 			delete paramInfo;
 
 			// Fill the buffers
-			rnboObj->prepareToProcess(args.sampleRate, currentBufferSize);
-			rnboObj->process(inputBuffers, numInputs, outputBuffers, numOutputs, currentBufferSize);
+			rnboObj.prepareToProcess(args.sampleRate, currentBufferSize);
+			rnboObj.process(inputBuffers, numInputs, outputBuffers, numOutputs, currentBufferSize);
 		}
 	}
 };
@@ -211,7 +204,7 @@ struct RnboModuleWidget : ModuleWidget {
 
 			RNBO::ParameterInfo *paramInfo = new RNBO::ParameterInfo;
 			for (int i = 0; i < numParams; i++) {
-				std::string paramLabel = std::string(module->rnboObj->getParameterName(i));
+				std::string paramLabel = std::string(module->rnboObj.getParameterName(i));
 				paramLabel.resize(10);
 				paramLabels.push_back(paramLabel);
 			}
