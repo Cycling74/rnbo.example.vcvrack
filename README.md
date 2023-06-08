@@ -16,6 +16,7 @@ extending further should be possible with a little effort.
 - Install the build dependencies specified at
   https://vcvrack.com/manual/Building#Setting-up-your-development-environment
     - e.g. Mac: install packages with brew, Windows: install MSYS2 and install packages
-- Export your RNBO patch to the rnbo-export directory.
+- Export your RNBO patch to the rnbo-export directory. Currently, the exported code must be named `rnbo_source.cpp`, so make sure 
+  that in the RNBO export sidebar, the _Export Name_ field is set correctly.
 - Run `make dist` to create a distributable package of your plugin, or install directly with `make
   install`.
