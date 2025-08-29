@@ -1,5 +1,9 @@
 #include "plugin.hpp"
 
+#ifndef MODULE_SLUG
+#define MODULE_SLUG "rnbo"
+#endif
+
 /// Processing
 
 struct RnboModule : Module {
@@ -182,7 +186,7 @@ struct RnboModuleWidget : ModuleWidget {
 		panel = new racktarget::Panel(40, 40, 40);
 		addChild(panel);
 		panel->box.size = box.size;
-		racktarget::Title *title = new racktarget::Title(box.size.x / 2, top_margin, box.size.x, "rnbo");
+		racktarget::Title *title = new racktarget::Title(box.size.x / 2, top_margin, box.size.x, MODULE_SLUG);
 		addChild(title);
 
 		if (module) {
@@ -233,7 +237,7 @@ struct RnboModuleWidget : ModuleWidget {
 			panel->box.size = box.size;
 
 			// Title text
-			racktarget::Title *title = new racktarget::Title(box.size.x / 2, top_margin, box.size.x, "rnbo");
+			racktarget::Title *title = new racktarget::Title(box.size.x / 2, top_margin, box.size.x, MODULE_SLUG);
 			addChild(title);
 
 			// Screws
@@ -304,4 +308,4 @@ struct RnboModuleWidget : ModuleWidget {
 
 
 /// Register the model
-Model* modelRnboModule = createModel<RnboModule, RnboModuleWidget>("rnbo");
+Model* modelRnboModule = createModel<RnboModule, RnboModuleWidget>(MODULE_SLUG);
