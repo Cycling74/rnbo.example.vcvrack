@@ -2,6 +2,7 @@ RACK_DIR ?= ../..
 
 # Automatically set the plugin slug to the first module's slug
 MODULE_SLUG := $(shell jq -r '.modules[0].slug' plugin.json)
+MODULE_NAME := $(shell jq -r '.modules[0].name' plugin.json | sed 's/ /\\ /g')
 
 # Exported code
 FLAGS += -Irnbo-export/rnbo/code
@@ -14,6 +15,7 @@ SOURCES += rnbo-export/rnbo_source.cpp
 SOURCES += rnbo-export/rnbo/RNBO.cpp
 
 CXXFLAGS += -DMODULE_SLUG=\"$(MODULE_SLUG)\"
+CXXFLAGS += -DMODULE_NAME=\"$(MODULE_NAME)\"
 
 # VCV module
 FLAGS += -Isrc 

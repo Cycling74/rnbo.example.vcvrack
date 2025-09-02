@@ -4,6 +4,10 @@
 #define MODULE_SLUG "rnbo"
 #endif
 
+#ifndef MODULE_NAME
+#define MODULE_NAME "RNBO"
+#endif
+
 /// Processing
 
 struct RnboModule : Module {
@@ -237,7 +241,7 @@ struct RnboModuleWidget : ModuleWidget {
 			panel->box.size = box.size;
 
 			// Title text
-			racktarget::Title *title = new racktarget::Title(box.size.x / 2, top_margin, box.size.x, MODULE_SLUG);
+			racktarget::Title *title = new racktarget::Title(box.size.x / 2, top_margin, box.size.x, MODULE_NAME);
 			addChild(title);
 
 			// Screws
